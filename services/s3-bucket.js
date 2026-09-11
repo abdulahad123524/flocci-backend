@@ -9,6 +9,9 @@ const {
   ListBucketsCommand,
   DeleteBucketCommand,
   DeleteObjectsCommand,
+  DeleteObjectCommand,
+  HeadBucketCommand,
+  CopyObjectCommand,
 } = require("@aws-sdk/client-s3");
 
 const s3 = new S3Client({
@@ -23,20 +26,31 @@ const s3 = new S3Client({
   },
 });
 
+const isMissingBucketError = (err) =>
+  err?.name === "NotFound" ||
+  err?.name === "NoSuchBucket" ||
+  err?.Code === "NotFound" ||
+  err?.$metadata?.httpStatusCode === 404;
+
 const createBucket = async (bucketName) => {
   try {
-    const command = new CreateBucketCommand({
-      Bucket: bucketName,
-    });
-    const response = await s3.send(command);
-    return response;
+    await headBucket(bucketName);
+    return { exists: true, bucketName };
+  } catch (err) {
+    if (!isMissingBucketError(err)) throw err;
+  }
+
+  try {
+    const response = await s3.send(
+      new CreateBucketCommand({ Bucket: bucketName }),
+    );
+    return { exists: false, bucketName, location: response.Location };
   } catch (err) {
     if (
       err.name === "BucketAlreadyOwnedByYou" ||
       err.name === "BucketAlreadyExists"
     ) {
-      console.log("Bucket already exists:", bucketName);
-      return;
+      return { exists: true, bucketName };
     }
     throw err;
   }
@@ -141,6 +155,87 @@ const deleteBucket = async (bucketName) => {
   await s3.send(new DeleteBucketCommand({ Bucket: bucketName }));
 };
 
+const deleteBucketobject = async (bucketName, key) => {
+  const command = new DeleteObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+  const response = await s3.send(command);
+  return response;
+};
+
+const headBucket = async (bucketName) => {
+  const command = new HeadBucketCommand({
+    Bucket: bucketName,
+  });
+  const response = await s3.send(command);
+  return response;
+};
+
+const copyObject = async (sourceBucketName, targetBucketName, key) => {
+  const source = await s3.send(
+    new GetObjectCommand({
+      Bucket: sourceBucketName,
+      Key: key,
+    }),
+  );
+  const bytes = await source.Body.transformToByteArray();
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: targetBucketName,
+      Key: key,
+      Body: Buffer.from(bytes),
+      ContentType: source.ContentType || "application/octet-stream",
+      ContentLength: bytes.length,
+    }),
+  );
+};
+
+const copyBucket = async (sourceBucketName, targetBucketName, key) => {
+  if (sourceBucketName === targetBucketName) {
+    throw new Error("Source and target buckets must be different");
+  }
+  await headBucket(sourceBucketName);
+  await headBucket(targetBucketName);
+
+  const keys = key
+    ? [key]
+    : (await listfiles(sourceBucketName)).map((obj) => obj.key);
+
+  if (!keys.length) {
+    throw new Error("Source bucket has no files to copy");
+  }
+
+  for (const objectKey of keys) {
+    try {
+      await s3.send(
+        new CopyObjectCommand({
+          Bucket: targetBucketName,
+          Key: objectKey,
+          CopySource: `${sourceBucketName}/${objectKey}`,
+        }),
+      );
+    } catch {
+      await copyObject(sourceBucketName, targetBucketName, objectKey);
+    }
+  }
+  return { copied: keys.length, keys };
+};
+
+const downlaodFile = async (key, bucketName) => {
+  const command = new GetObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+  const response = await s3.send(command);
+  const bytes = await response.Body.transformToByteArray();
+  return {
+    key,
+    contentType: response.ContentType || "application/octet-stream",
+    body: Buffer.from(bytes),
+  };
+};
+
 module.exports = {
   s3,
   createBucket,
@@ -149,4 +244,8 @@ module.exports = {
   listfiles,
   listBuckets,
   deleteBucket,
+  deleteBucketobject,
+  headBucket,
+  copyBucket,
+  downlaodFile,
 };

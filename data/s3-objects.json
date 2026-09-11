@@ -1,7 +1,7 @@
 {
-  "000000000000/my-bucket/file.txt" : {
-    "bucketName" : "my-bucket",
-    "key" : "file.txt",
+  "000000000000/buket1/hello.txt" : {
+    "bucketName" : "buket1",
+    "key" : "hello.txt",
     "metadata" : { },
     "contentType" : "text/plain",
     "contentEncoding" : null,
@@ -10,13 +10,13 @@
     "serverSideEncryption" : null,
     "sseCustomerAlgorithm" : null,
     "sseCustomerKeyMd5" : null,
-    "size" : 25,
-    "lastModified" : "2026-09-09T18:25:39.482Z",
+    "size" : 11,
+    "lastModified" : "2026-09-10T22:22:05.744Z",
     "storageClass" : "STANDARD",
     "checksum" : {
-      "checksumCRC32" : "xSMY0w==",
+      "checksumCRC32" : null,
       "checksumCRC32C" : null,
-      "checksumCRC64NVME" : null,
+      "checksumCRC64NVME" : "15VpEV3TdoE=",
       "checksumSHA1" : null,
       "checksumSHA256" : null,
       "checksumType" : "FULL_OBJECT"
@@ -30,6 +30,6 @@
     "legalHoldStatus" : null,
     "acl" : null,
     "latest" : true,
-    "etag" : "\"b4ff33f18e4796d26c9198480cc4d63e\""
+    "etag" : "\"38400c15ff7dc79ce4ad0a783e5b56a2\""
   }
 }
