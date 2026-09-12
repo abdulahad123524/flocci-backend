@@ -18,5 +18,15 @@
     "lastIngestionTime" : 1789078962995,
     "uploadSequenceToken" : "30dd0015-061d-4774-ae89-7055695dc055",
     "storedBytes" : 62936
+  },
+  "000000000000/us-east-1::/floci/ui::2026/09/11/2c2c72fb" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/09/11/2c2c72fb",
+    "createdTime" : 1789143830198,
+    "firstEventTimestamp" : 1789143830211,
+    "lastEventTimestamp" : 1789144604181,
+    "lastIngestionTime" : 1789144604181,
+    "uploadSequenceToken" : "a637c799-632d-46bc-b7b1-6f21b9181c30",
+    "storedBytes" : 86603
   }
 }

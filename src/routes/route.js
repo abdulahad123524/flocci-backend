@@ -1,0 +1,15 @@
+const express = require("express");
+const router = express.Router();
+const bucketRoutes = require("./bucket");
+const objectRoutes = require("./objects");
+const versioningRoutes = require("./versioning");
+const tagRoutes = require("./tags");
+const encryptRoutes = require("./encrypt");
+const corsRoutes = require("./cors");
+router.use(bucketRoutes);
+router.use(objectRoutes);
+router.use(versioningRoutes);
+router.use(tagRoutes);
+router.use(encryptRoutes);
+router.use(corsRoutes);
+module.exports = router;

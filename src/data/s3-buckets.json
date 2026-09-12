@@ -9,7 +9,7 @@
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
-    "corsConfiguration" : null,
+    "corsConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CORSConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><CORSRule><AllowedMethod>GET</AllowedMethod><AllowedMethod>HEAD</AllowedMethod><AllowedMethod>PUT</AllowedMethod><AllowedMethod>POST</AllowedMethod><AllowedMethod>DELETE</AllowedMethod><AllowedOrigin>ssdfsdfds</AllowedOrigin><AllowedHeader>*dsfsdfsdf</AllowedHeader><MaxAgeSeconds>3003</MaxAgeSeconds></CORSRule></CORSConfiguration>",
     "lifecycleConfiguration" : null,
     "transitionDefaultMinimumObjectSize" : null,
     "acl" : null,
@@ -27,18 +27,21 @@
   "000000000000/bucket2" : {
     "name" : "bucket2",
     "creationDate" : "2026-09-10T22:18:22.737525144Z",
-    "versioningStatus" : null,
+    "versioningStatus" : "Enabled",
     "loggingConfiguration" : null,
-    "tags" : { },
+    "tags" : {
+      "env" : "prod",
+      "asdsad" : "assadasdsad"
+    },
     "notificationConfiguration" : null,
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
-    "corsConfiguration" : null,
+    "corsConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CORSConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><CORSRule><AllowedMethod>GET</AllowedMethod><AllowedMethod>PUT</AllowedMethod><AllowedOrigin>*</AllowedOrigin><AllowedHeader>*</AllowedHeader><MaxAgeSeconds>3000</MaxAgeSeconds></CORSRule></CORSConfiguration>",
     "lifecycleConfiguration" : null,
     "transitionDefaultMinimumObjectSize" : null,
     "acl" : null,
-    "encryptionConfiguration" : null,
+    "encryptionConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ServerSideEncryptionConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Rule><ApplyServerSideEncryptionByDefault><SSEAlgorithm>AES256</SSEAlgorithm></ApplyServerSideEncryptionByDefault></Rule></ServerSideEncryptionConfiguration>",
     "replicationConfiguration" : null,
     "publicAccessBlockConfiguration" : null,
     "ownershipControlsConfiguration" : null,
@@ -47,6 +50,6 @@
     "region" : "us-east-1",
     "websiteConfiguration" : null,
     "metricsConfigurations" : null,
-    "versioningEnabled" : false
+    "versioningEnabled" : true
   }
 }
