@@ -8,6 +8,11 @@ const {
   CopyObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { s3 } = require("../config/config");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
+
+
+
 
 const uploadfile = async (file, bucketName) => {
   const bucket = bucketName || process.env.AWS_BUCKET_NAME;
@@ -36,8 +41,9 @@ const uploadfile = async (file, bucketName) => {
     ContentType: contentType,
     ContentLength: body.length,
   });
+  const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
   const response = await s3.send(command);
-  return { key, etag: response.ETag };
+  return { key, etag: response.ETag, imageUrl: url };
 };
 
 const listfiles = async (bucketName) => {
@@ -57,7 +63,9 @@ const getfile = async (key, bucketName) => {
   const command = new GetObjectCommand({
     Bucket: bucketName || process.env.AWS_BUCKET_NAME,
     Key: key,
+
   });
+  const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
   const response = await s3.send(command);
   const bytes = await response.Body.transformToByteArray();
   const contentType = response.ContentType || "application/octet-stream";
@@ -74,6 +82,7 @@ const getfile = async (key, bucketName) => {
     dataUrl: isText
       ? null
       : `data:${contentType};base64,${Buffer.from(bytes).toString("base64")}`,
+      imageUrl: url,
   };
 };
 
