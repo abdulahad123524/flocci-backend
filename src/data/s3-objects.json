@@ -236,5 +236,39 @@
     "acl" : null,
     "latest" : true,
     "etag" : "\"38400c15ff7dc79ce4ad0a783e5b56a2\""
+  },
+  "000000000000/buket1/readme.md" : {
+    "bucketName" : "buket1",
+    "key" : "readme.md",
+    "metadata" : { },
+    "contentType" : "text/markdown",
+    "contentEncoding" : null,
+    "contentDisposition" : null,
+    "cacheControl" : null,
+    "serverSideEncryption" : null,
+    "sseKmsKeyId" : null,
+    "sseCustomerAlgorithm" : null,
+    "sseCustomerKeyMd5" : null,
+    "size" : 965,
+    "lastModified" : "2026-09-18T22:24:43.945Z",
+    "storageClass" : "STANDARD",
+    "checksum" : {
+      "checksumCRC32" : null,
+      "checksumCRC32C" : null,
+      "checksumCRC64NVME" : "3UUmUSr6WSI=",
+      "checksumSHA1" : null,
+      "checksumSHA256" : null,
+      "checksumType" : "FULL_OBJECT"
+    },
+    "parts" : [ ],
+    "versionId" : null,
+    "deleteMarker" : false,
+    "tags" : { },
+    "objectLockMode" : null,
+    "retainUntilDate" : null,
+    "legalHoldStatus" : null,
+    "acl" : null,
+    "latest" : true,
+    "etag" : "\"3d39764a83d716f140512ab45827863d\""
   }
 }

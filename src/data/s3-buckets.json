@@ -26,36 +26,5 @@
     "analyticsConfigurations" : null,
     "inventoryConfigurations" : null,
     "versioningEnabled" : false
-  },
-  "000000000000/bucket2" : {
-    "name" : "bucket2",
-    "creationDate" : "2026-09-10T22:18:22.737525144Z",
-    "versioningStatus" : "Enabled",
-    "loggingConfiguration" : null,
-    "tags" : {
-      "env" : "prod",
-      "asdsad" : "assadasdsad"
-    },
-    "notificationConfiguration" : null,
-    "objectLockEnabled" : false,
-    "defaultRetention" : null,
-    "policy" : null,
-    "corsConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CORSConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><CORSRule><AllowedMethod>GET</AllowedMethod><AllowedMethod>PUT</AllowedMethod><AllowedOrigin>*</AllowedOrigin><AllowedHeader>*</AllowedHeader><MaxAgeSeconds>3000</MaxAgeSeconds></CORSRule></CORSConfiguration>",
-    "lifecycleConfiguration" : null,
-    "transitionDefaultMinimumObjectSize" : null,
-    "acl" : null,
-    "encryptionConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ServerSideEncryptionConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Rule><ApplyServerSideEncryptionByDefault><SSEAlgorithm>AES256</SSEAlgorithm></ApplyServerSideEncryptionByDefault></Rule></ServerSideEncryptionConfiguration>",
-    "replicationConfiguration" : null,
-    "publicAccessBlockConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><PublicAccessBlockConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><BlockPublicAcls>false</BlockPublicAcls><IgnorePublicAcls>false</IgnorePublicAcls><BlockPublicPolicy>false</BlockPublicPolicy><RestrictPublicBuckets>false</RestrictPublicBuckets></PublicAccessBlockConfiguration>",
-    "ownershipControlsConfiguration" : null,
-    "requestPaymentPayer" : null,
-    "accelerateStatus" : null,
-    "region" : "us-east-1",
-    "websiteConfiguration" : null,
-    "metricsConfigurations" : null,
-    "intelligentTieringConfigurations" : null,
-    "analyticsConfigurations" : null,
-    "inventoryConfigurations" : null,
-    "versioningEnabled" : true
   }
 }
