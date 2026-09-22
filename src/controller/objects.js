@@ -24,7 +24,6 @@ const getObject = async (req, res) => {
 
 
 const createMultipartUpload = async (req, res) => {
-  conse
   try {
     const { filename, contentType, bucketName } = req.body || {};
     if (!filename) {
@@ -41,7 +40,7 @@ const createMultipartUpload = async (req, res) => {
       },
       bucketName,
     );
-console.log("Multipart upload response:", response);
+    console.log("Multipart upload response:", response);
 
     res.status(200).json({ message: "Multipart upload created successfully", ...response });
   } catch (error) {
@@ -53,7 +52,7 @@ console.log("Multipart upload response:", response);
 const uploadObject = async (req, res) => {
   try {
     const { filename, content, contentType, bucketName } = req.body || {};
-    console.log("Received upload request:", { filename, contentType, bucketName,content });
+    console.log("Received upload request:", { filename, contentType, bucketName });
     if (!filename || !content) {
       return res.status(400).json({ message: "No file provided" });
     }

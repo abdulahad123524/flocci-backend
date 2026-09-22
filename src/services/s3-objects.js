@@ -16,32 +16,36 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { error } = require("console");
 const { type } = require("os");
 
-const multipartfile = async function name(file,bucketname) {
-const bucket = bucketname || process.env.AWS_BUCKET_NAME
+const multipartfile = async function name(file, bucketname) {
+  const bucket = bucketname || process.env.AWS_BUCKET_NAME;
 
-if(!bucketname){
-  throw new Error("bucket name is missing")
-}
-const isPath = typeof file==="string"
-const key = isPath ? path.basename(file) : file.originalname
-const body = isPath ? fs.readFileSync(file) : file.buffer
-const contentType = isPath ? "application/octet-stream" : file.mimetype || "application/octet-stream"
-
-if(!key){
-  throw new Error("File name is required")  
-}
-  if(!body || !body.length){
-    throw new Error("File body is empty")
+  if (!bucketname) {
+    throw new Error("bucket name is missing");
   }
-  const command  = new CreateMultipartUploadCommand({
+  const isPath = typeof file === "string";
+  const key = isPath ? path.basename(file) : file.originalname;
+  // If no buffer/body is provided in the initial multipart request,
+  // we are only initializing the upload process.
+  const body = isPath ? fs.readFileSync(file) : (file.buffer || null);
+  const contentType = isPath
+    ? "application/octet-stream"
+    : file.mimetype || "application/octet-stream";
+
+  if (!key) {
+    throw new Error("File name is required");
+  }
+  
+  // Removed strict check on body existence here, as multipart
+  // initialization does not require the full file body yet.
+  
+  const command = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
-contentType: contentType,
-  })
-  const response = await s3.send(command)
-return {key, uploadId: response.UploadId} 
-
-}
+    ContentType: contentType,
+  });
+  const response = await s3.send(command);
+  return { key, uploadId: response.UploadId };
+};
 
 // const uploadfile = async (file, bucketName,) => {
 //   const bucket = bucketName || process.env.AWS_BUCKET_NAME;
