@@ -5,7 +5,13 @@
     "versioningStatus" : "Enabled",
     "loggingConfiguration" : null,
     "tags" : { },
-    "notificationConfiguration" : null,
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : true
+    },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
@@ -26,5 +32,33 @@
     "analyticsConfigurations" : null,
     "inventoryConfigurations" : null,
     "versioningEnabled" : true
+  },
+  "000000000000/bucket2" : {
+    "name" : "bucket2",
+    "creationDate" : "2026-09-23T20:25:23.832060084Z",
+    "versioningStatus" : null,
+    "loggingConfiguration" : null,
+    "tags" : { },
+    "notificationConfiguration" : null,
+    "objectLockEnabled" : false,
+    "defaultRetention" : null,
+    "policy" : null,
+    "corsConfiguration" : null,
+    "lifecycleConfiguration" : null,
+    "transitionDefaultMinimumObjectSize" : null,
+    "acl" : null,
+    "encryptionConfiguration" : null,
+    "replicationConfiguration" : null,
+    "publicAccessBlockConfiguration" : null,
+    "ownershipControlsConfiguration" : null,
+    "requestPaymentPayer" : null,
+    "accelerateStatus" : null,
+    "region" : "us-east-1",
+    "websiteConfiguration" : null,
+    "metricsConfigurations" : null,
+    "intelligentTieringConfigurations" : null,
+    "analyticsConfigurations" : null,
+    "inventoryConfigurations" : null,
+    "versioningEnabled" : false
   }
 }
