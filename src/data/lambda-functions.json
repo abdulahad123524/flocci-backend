@@ -1,0 +1,76 @@
+{
+  "000000000000/lambda::us-east-1::floci-s3-object-created::$LATEST" : {
+    "functionName" : "floci-s3-object-created",
+    "functionArn" : "arn:aws:lambda:us-east-1:000000000000:function:floci-s3-object-created",
+    "accountId" : "000000000000",
+    "runtime" : "nodejs20.x",
+    "role" : "arn:aws:iam::000000000000:role/lambda-role",
+    "handler" : "index.handler",
+    "description" : null,
+    "timeout" : 3,
+    "memorySize" : 128,
+    "state" : "Active",
+    "stateReason" : null,
+    "stateReasonCode" : null,
+    "codeSizeBytes" : 313,
+    "packageType" : "Zip",
+    "imageUri" : null,
+    "imageConfigCommand" : null,
+    "imageConfigEntryPoint" : null,
+    "imageConfigWorkingDirectory" : null,
+    "codeLocalPath" : "/app/data/lambda-code/000000000000/@regions/us-east-1/floci-s3-object-created",
+    "s3Bucket" : null,
+    "s3Key" : null,
+    "environment" : { },
+    "tags" : { },
+    "policies" : [ {
+      "Sid" : "s3invoke",
+      "Effect" : "Allow",
+      "Principal" : {
+        "Service" : "s3.amazonaws.com"
+      },
+      "Action" : "lambda:InvokeFunction",
+      "Resource" : "arn:aws:lambda:us-east-1:000000000000:function:floci-s3-object-created",
+      "Condition" : {
+        "ArnLike" : {
+          "AWS:SourceArn" : "arn:aws:s3:::BUCKET_NAME"
+        }
+      }
+    }, {
+      "Sid" : "floci-lambda",
+      "Effect" : "Allow",
+      "Principal" : {
+        "Service" : "s3.amazonaws.com"
+      },
+      "Action" : "lambda:InvokeFunction",
+      "Resource" : "arn:aws:lambda:us-east-1:000000000000:function:floci-s3-object-created",
+      "Condition" : {
+        "ArnLike" : {
+          "AWS:SourceArn" : "arn:aws:s3:::bucket-lambda"
+        }
+      }
+    } ],
+    "lastModified" : 1790289205204,
+    "revisionId" : "9382b5bb-533c-46c2-b7f0-5c836c172486",
+    "sourceRevisionId" : null,
+    "version" : "$LATEST",
+    "urlConfig" : null,
+    "reservedConcurrentExecutions" : null,
+    "architectures" : null,
+    "ephemeralStorageSize" : 512,
+    "tracingMode" : "PassThrough",
+    "deadLetterTargetArn" : null,
+    "layers" : [ ],
+    "kmsKeyArn" : null,
+    "vpcConfig" : null,
+    "vpcId" : null,
+    "snapStartApplyOn" : "None",
+    "logFormat" : "Text",
+    "applicationLogLevel" : null,
+    "systemLogLevel" : null,
+    "logGroup" : null,
+    "fileSystemConfigs" : [ ],
+    "codeSha256" : "n2bAmA0GiWbXnpSY2ZqEnizR7DCbdYKeCkMohokhgYI=",
+    "hotReloadHostPath" : null
+  }
+}

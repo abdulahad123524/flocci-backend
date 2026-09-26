@@ -1,8 +1,8 @@
 {
-  "000000000000/buket1" : {
-    "name" : "buket1",
-    "creationDate" : "2026-09-10T22:16:36.369884365Z",
-    "versioningStatus" : "Enabled",
+  "000000000000/bucket4" : {
+    "name" : "bucket4",
+    "creationDate" : "2026-09-24T23:23:53.500776293Z",
+    "versioningStatus" : null,
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : {
@@ -15,7 +15,7 @@
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
-    "corsConfiguration" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?><CORSConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><CORSRule><AllowedMethod>GET</AllowedMethod><AllowedMethod>HEAD</AllowedMethod><AllowedMethod>PUT</AllowedMethod><AllowedMethod>POST</AllowedMethod><AllowedMethod>DELETE</AllowedMethod><AllowedOrigin>ssdfsdfds</AllowedOrigin><AllowedHeader>*dsfsdfsdf</AllowedHeader><MaxAgeSeconds>3003</MaxAgeSeconds></CORSRule></CORSConfiguration>",
+    "corsConfiguration" : null,
     "lifecycleConfiguration" : null,
     "transitionDefaultMinimumObjectSize" : null,
     "acl" : null,
@@ -31,15 +31,49 @@
     "intelligentTieringConfigurations" : null,
     "analyticsConfigurations" : null,
     "inventoryConfigurations" : null,
-    "versioningEnabled" : true
+    "versioningEnabled" : false
   },
-  "000000000000/bucket2" : {
-    "name" : "bucket2",
-    "creationDate" : "2026-09-23T20:25:23.832060084Z",
+  "000000000000/bucket-2" : {
+    "name" : "bucket-2",
+    "creationDate" : "2026-09-25T21:00:15.800056810Z",
     "versioningStatus" : null,
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : null,
+    "objectLockEnabled" : false,
+    "defaultRetention" : null,
+    "policy" : null,
+    "corsConfiguration" : null,
+    "lifecycleConfiguration" : null,
+    "transitionDefaultMinimumObjectSize" : null,
+    "acl" : null,
+    "encryptionConfiguration" : null,
+    "replicationConfiguration" : null,
+    "publicAccessBlockConfiguration" : null,
+    "ownershipControlsConfiguration" : null,
+    "requestPaymentPayer" : null,
+    "accelerateStatus" : null,
+    "region" : "us-east-1",
+    "websiteConfiguration" : null,
+    "metricsConfigurations" : null,
+    "intelligentTieringConfigurations" : null,
+    "analyticsConfigurations" : null,
+    "inventoryConfigurations" : null,
+    "versioningEnabled" : false
+  },
+  "000000000000/bucket-1" : {
+    "name" : "bucket-1",
+    "creationDate" : "2026-09-24T23:53:44.122654419Z",
+    "versioningStatus" : null,
+    "loggingConfiguration" : null,
+    "tags" : { },
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : true
+    },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,

@@ -6,5 +6,13 @@
     "deletionProtectionEnabled" : false,
     "kmsKeyId" : null,
     "tags" : { }
+  },
+  "000000000000/us-east-1::/aws/lambda/floci-s3-object-created" : {
+    "logGroupName" : "/aws/lambda/floci-s3-object-created",
+    "createdTime" : 1790289317737,
+    "retentionInDays" : null,
+    "deletionProtectionEnabled" : false,
+    "kmsKeyId" : null,
+    "tags" : { }
   }
 }

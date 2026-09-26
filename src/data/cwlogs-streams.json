@@ -9,6 +9,26 @@
     "uploadSequenceToken" : "c93acaeb-9e08-45c4-884a-7ca02f9ac258",
     "storedBytes" : 12601
   },
+  "000000000000/us-east-1::/floci/ui::2026/09/25/4f0b9609" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/09/25/4f0b9609",
+    "createdTime" : 1790354427071,
+    "firstEventTimestamp" : 1790354427764,
+    "lastEventTimestamp" : 1790377678012,
+    "lastIngestionTime" : 1790377678012,
+    "uploadSequenceToken" : "9eeeaa22-97dc-49cf-94bc-d19d0850c205",
+    "storedBytes" : 167815
+  },
+  "000000000000/us-east-1::/floci/ui::2026/09/24/611eeb88" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/09/24/611eeb88",
+    "createdTime" : 1790273785579,
+    "firstEventTimestamp" : 1790273786638,
+    "lastEventTimestamp" : 1790294861965,
+    "lastIngestionTime" : 1790294861965,
+    "uploadSequenceToken" : "00afa5ff-ea32-42db-ab25-95c9f776d427",
+    "storedBytes" : 153384
+  },
   "000000000000/us-east-1::/floci/ui::2026/09/23/eb81f841" : {
     "logGroupName" : "/floci/ui",
     "logStreamName" : "2026/09/23/eb81f841",
@@ -28,6 +48,16 @@
     "lastIngestionTime" : 1789078962995,
     "uploadSequenceToken" : "30dd0015-061d-4774-ae89-7055695dc055",
     "storedBytes" : 62936
+  },
+  "000000000000/us-east-1::/aws/lambda/floci-s3-object-created::2026/09/24/[$LATEST]16df6e79" : {
+    "logGroupName" : "/aws/lambda/floci-s3-object-created",
+    "logStreamName" : "2026/09/24/[$LATEST]16df6e79",
+    "createdTime" : 1790289317737,
+    "firstEventTimestamp" : 1790289317846,
+    "lastEventTimestamp" : 1790289317850,
+    "lastIngestionTime" : 1790289317850,
+    "uploadSequenceToken" : "cd855d40-2979-45f3-bd72-7aa361986b1d",
+    "storedBytes" : 219
   },
   "000000000000/us-east-1::/floci/ui::2026/09/11/2c2c72fb" : {
     "logGroupName" : "/floci/ui",

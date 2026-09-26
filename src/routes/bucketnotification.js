@@ -22,5 +22,9 @@ router.post(
   "/bucketnotification/configure",
   bucketNotificationController.configureBucketNotification,
 );
+router.post(
+  "/bucketnotification/configure/queue",
+  bucketNotificationController.configureBucketNotificationWithQueue,
+);
 
 module.exports = router;

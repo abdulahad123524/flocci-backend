@@ -97,28 +97,78 @@ const deleteBucketNotification = async (req, res) => {
 
 const configureBucketNotification = async (req, res) => {
   try {
-    const { bucketName, notificationConfig } = req.body;
+    const { bucketName, lambdaFunctionArn, events, notificationId } = req.body;
+
     if (!bucketName) {
-      return res.status(400).json({ message: "Bucket name is required" });
+      return res.status(400).json({
+        message: "Bucket name is required",
+      });
     }
-    if (!notificationConfig) {
-      return res
-        .status(400)
-        .json({ message: "Notification configuration is required" });
+
+    if (!lambdaFunctionArn) {
+      return res.status(400).json({
+        message: "Lambda function ARN is required",
+      });
     }
+
+    if (!Array.isArray(events) || events.length === 0) {
+      return res.status(400).json({
+        message: "At least one event is required",
+      });
+    }
+
     const result = await notificationService.lambdaFunctionConfigurations(
       bucketName,
-      notificationConfig,
+      lambdaFunctionArn,
+      events,
+      notificationId,
     );
 
-    res.status(200).json({
-      message: "Notification configuration set successfully",
+    return res.status(200).json({
+      message: "Lambda notification configured successfully",
       result,
     });
   } catch (error) {
-    console.error("Error setting notification configuration:", error);
+    console.error("Error configuring Lambda notification:", error);
+
+    return res.status(500).json({
+      message: "Error configuring Lambda notification: " + error.message,
+    });
+  }
+};
+
+const configureBucketNotificationWithQueue = async (req, res) => {
+  try {
+    const { bucketName, queueArn, events, notificationId } = req.body;
+    if (!bucketName) {
+      return res.status(400).json({ message: "Bucket name is required" });
+    }
+    if (!queueArn) {
+      return res.status(400).json({ message: "Queue ARN is required" });
+    }
+    if (!Array.isArray(events)) {
+      return res.status(400).json({ message: "Events must be an array" });
+    }
+    if (events.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "At least one event is required" });
+    }
+    const result = await notificationService.queueConfigurations(
+      bucketName,
+      queueArn,
+      events,
+      notificationId,
+    );
+
+    res.status(200).json({
+      message: "SQS notification configured successfully",
+      result,
+    });
+  } catch (error) {
+    console.error("Error configuring SQS notification:", error);
     res.status(500).json({
-      message: "Error setting notification configuration: " + error.message,
+      message: "Error configuring SQS notification: " + error.message,
     });
   }
 };
@@ -129,4 +179,5 @@ module.exports = {
   updateBucketNotification,
   deleteBucketNotification,
   configureBucketNotification,
+  configureBucketNotificationWithQueue,
 };
