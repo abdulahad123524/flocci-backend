@@ -1,16 +1,21 @@
 {
-  "000000000000/bucket4" : {
-    "name" : "bucket4",
-    "creationDate" : "2026-09-24T23:23:53.500776293Z",
+  "000000000000/bucket-2" : {
+    "name" : "bucket-2",
+    "creationDate" : "2026-09-25T21:00:15.800056810Z",
     "versioningStatus" : null,
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : {
-      "queueConfigurations" : [ ],
+      "queueConfigurations" : [ {
+        "id" : "queue-notification",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:floci-job-queue",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
       "topicConfigurations" : [ ],
       "lambdaFunctionConfigurations" : [ ],
       "eventBridgeEnabled" : false,
-      "empty" : true
+      "empty" : false
     },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
@@ -33,13 +38,52 @@
     "inventoryConfigurations" : null,
     "versioningEnabled" : false
   },
-  "000000000000/bucket-2" : {
-    "name" : "bucket-2",
-    "creationDate" : "2026-09-25T21:00:15.800056810Z",
+  "000000000000/bucket-3" : {
+    "name" : "bucket-3",
+    "creationDate" : "2026-09-28T17:30:40.596611067Z",
     "versioningStatus" : null,
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : null,
+    "objectLockEnabled" : false,
+    "defaultRetention" : null,
+    "policy" : null,
+    "corsConfiguration" : null,
+    "lifecycleConfiguration" : null,
+    "transitionDefaultMinimumObjectSize" : null,
+    "acl" : null,
+    "encryptionConfiguration" : null,
+    "replicationConfiguration" : null,
+    "publicAccessBlockConfiguration" : null,
+    "ownershipControlsConfiguration" : null,
+    "requestPaymentPayer" : null,
+    "accelerateStatus" : null,
+    "region" : "us-east-1",
+    "websiteConfiguration" : null,
+    "metricsConfigurations" : null,
+    "intelligentTieringConfigurations" : null,
+    "analyticsConfigurations" : null,
+    "inventoryConfigurations" : null,
+    "versioningEnabled" : false
+  },
+  "000000000000/bucket123" : {
+    "name" : "bucket123",
+    "creationDate" : "2026-09-28T22:18:19.321614803Z",
+    "versioningStatus" : null,
+    "loggingConfiguration" : null,
+    "tags" : { },
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : false
+    },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,

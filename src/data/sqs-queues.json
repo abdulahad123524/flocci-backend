@@ -1,0 +1,18 @@
+{
+  "000000000000/us-east-1::/000000000000/s3-object-events" : {
+    "queueName" : "s3-object-events",
+    "queueUrl" : "http://localhost:4566/000000000000/s3-object-events",
+    "accountId" : "000000000000",
+    "attributes" : {
+      "Policy" : "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowS3Bucketbucket123\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket123\"}}}]}",
+      "ReceiveMessageWaitTimeSeconds" : "0",
+      "DelaySeconds" : "0",
+      "MessageRetentionPeriod" : "345600",
+      "MaximumMessageSize" : "1048576",
+      "VisibilityTimeout" : "30"
+    },
+    "tags" : { },
+    "createdTimestamp" : "2026-09-28T22:18:19.339961139Z",
+    "lastModifiedTimestamp" : "2026-09-28T22:18:19.361836963Z"
+  }
+}

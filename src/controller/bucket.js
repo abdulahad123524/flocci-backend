@@ -80,6 +80,43 @@ const copyBucket = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const configureSqsNotification = async (req, res) => {
+  try {
+    const { bucketName } = req.body;
+
+    if (!bucketName) {
+      return res.status(400).json({
+        message: "bucketName is required",
+      });
+    }
+
+    const result = await bucketService.configureSqsNotification(bucketName);
+
+    return res.status(200).json({
+      message: "SQS notification configured successfully",
+      ...result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const configureAllBucketsForSqs = async (req, res) => {
+  try {
+    const results = await bucketService.configureAllBucketsForSqs();
+
+    return res.status(200).json({
+      message: "SQS notification configured for all buckets",
+      results,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   listBuckets,
@@ -87,4 +124,6 @@ module.exports = {
   deleteBucket,
   headBucket,
   copyBucket,
+  configureSqsNotification,
+  configureAllBucketsForSqs,
 };

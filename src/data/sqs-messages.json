@@ -1,0 +1,17 @@
+{
+  "000000000000/us-east-1::/000000000000/s3-object-events" : [ {
+    "messageId" : "f998f4aa-7154-4bc3-8614-48b57045bc87",
+    "body" : "{\"Records\":[{\"eventVersion\":\"2.1\",\"eventSource\":\"aws:s3\",\"awsRegion\":\"us-east-1\",\"eventTime\":\"2026-09-28T22:49:02.159372296Z\",\"eventName\":\"ObjectCreated:Put\",\"userIdentity\":{\"principalId\":\"AWS:EMULATOR\"},\"requestParameters\":{\"sourceIPAddress\":\"127.0.0.1\"},\"responseElements\":{\"x-amz-request-id\":\"bec2359d-3e55-4d95-88fc-5210424bb08d\"},\"s3\":{\"s3SchemaVersion\":\"1.0\",\"configurationId\":\"emulator\",\"bucket\":{\"name\":\"bucket123\",\"arn\":\"arn:aws:s3:::bucket123\"},\"object\":{\"key\":\"screencapture-localhost-3000-2026-09-22-14_27_25.png\",\"size\":32768,\"eTag\":\"2e90db59ce4bfc37693c42f377a3789c\"}}}]}",
+    "messageAttributes" : { },
+    "sentTimestamp" : "2026-09-28T22:49:02.159780035Z",
+    "firstReceiveTimestamp" : null,
+    "receiveCount" : 0,
+    "md5OfBody" : "f30990c80b9b73533f34420c07a7bac2",
+    "md5OfMessageAttributes" : null,
+    "messageGroupId" : null,
+    "messageDeduplicationId" : null,
+    "sequenceNumber" : 0,
+    "originalSourceQueueUrl" : null,
+    "awsTraceHeader" : null
+  } ]
+}

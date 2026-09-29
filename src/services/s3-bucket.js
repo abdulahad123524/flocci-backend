@@ -6,9 +6,12 @@ const {
   HeadBucketCommand,
   GetBucketVersioningCommand,
   PutBucketVersioningCommand,
+  GetBucketNotificationConfigurationCommand,
+  PutBucketNotificationConfigurationCommand,
 } = require("@aws-sdk/client-s3");
 const { s3 } = require("../config/config");
 const objectService = require("./s3-objects");
+const { getObjectEventQueue, setQueuePolicy } = require("./s3.sqsservice");
 
 const isMissingBucketError = (err) =>
   err?.name === "NotFound" ||
@@ -16,26 +19,71 @@ const isMissingBucketError = (err) =>
   err?.Code === "NotFound" ||
   err?.$metadata?.httpStatusCode === 404;
 
+// const createBucket = async (bucketName) => {
+//   try {
+//     await headBucket(bucketName);
+//     return { exists: true, bucketName };
+//   } catch (err) {
+//     if (!isMissingBucketError(err)) throw err;
+//   }
+
+//   try {
+//     const response = await s3.send(
+//       new CreateBucketCommand({ Bucket: bucketName }),
+//     );
+//     return { exists: false, bucketName, location: response.Location };
+//   } catch (err) {
+//     if (
+//       err.name === "BucketAlreadyOwnedByYou" ||
+//       err.name === "BucketAlreadyExists"
+//     ) {
+//       return { exists: true, bucketName };
+//     }
+//     throw err;
+//   }
+// };
+
 const createBucket = async (bucketName) => {
   try {
     await headBucket(bucketName);
-    return { exists: true, bucketName };
+
+    return {
+      exists: true,
+      bucketName,
+    };
   } catch (err) {
-    if (!isMissingBucketError(err)) throw err;
+    if (!isMissingBucketError(err)) {
+      throw err;
+    }
   }
 
   try {
     const response = await s3.send(
-      new CreateBucketCommand({ Bucket: bucketName }),
+      new CreateBucketCommand({
+        Bucket: bucketName,
+      }),
     );
-    return { exists: false, bucketName, location: response.Location };
+
+    // Automatically connect new bucket to common SQS queue
+    const sqsNotification = await configureSqsNotification(bucketName);
+
+    return {
+      exists: false,
+      bucketName,
+      location: response.Location,
+      sqsNotification,
+    };
   } catch (err) {
     if (
       err.name === "BucketAlreadyOwnedByYou" ||
       err.name === "BucketAlreadyExists"
     ) {
-      return { exists: true, bucketName };
+      return {
+        exists: true,
+        bucketName,
+      };
     }
+
     throw err;
   }
 };
@@ -116,6 +164,95 @@ const setbucketVersioning = async (bucketName, status = "Enabled") => {
   return getbucketVersioning(bucketName);
 };
 
+const configureAllBucketsForSqs = async () => {
+  const buckets = await listBuckets();
+
+  const results = [];
+
+  for (const bucket of buckets) {
+    if (!bucket.name) {
+      continue;
+    }
+
+    try {
+      const result = await configureSqsNotification(bucket.name);
+
+      results.push({
+        bucketName: bucket.name,
+        success: true,
+        queueUrl: result.queueUrl,
+        queueArn: result.queueArn,
+      });
+    } catch (error) {
+      results.push({
+        bucketName: bucket.name,
+        success: false,
+        error: error.message,
+      });
+    }
+  }
+
+  return results;
+};
+
+const configureSqsNotification = async (bucketName) => {
+  if (!bucketName) {
+    throw new Error("Bucket name is required");
+  }
+
+  const queue = await getObjectEventQueue();
+
+  await setQueuePolicy(queue.queueUrl, queue.queueArn, bucketName);
+
+  const existingConfiguration = await s3.send(
+    new GetBucketNotificationConfigurationCommand({
+      Bucket: bucketName,
+    }),
+  );
+
+  const lambdaConfigurations =
+    existingConfiguration.LambdaFunctionConfigurations || [];
+
+  const topicConfigurations = existingConfiguration.TopicConfigurations || [];
+
+  const existingQueueConfigurations =
+    existingConfiguration.QueueConfigurations || [];
+
+  const filteredQueueConfigurations = existingQueueConfigurations.filter(
+    (config) => config.Id !== "floci-s3-object-events",
+  );
+
+  const queueConfigurations = [
+    ...filteredQueueConfigurations,
+    {
+      Id: "floci-s3-object-events",
+      QueueArn: queue.queueArn,
+      Events: ["s3:ObjectCreated:*"],
+    },
+  ];
+
+  await s3.send(
+    new PutBucketNotificationConfigurationCommand({
+      Bucket: bucketName,
+
+      NotificationConfiguration: {
+        QueueConfigurations: queueConfigurations,
+
+        LambdaFunctionConfigurations: lambdaConfigurations,
+
+        TopicConfigurations: topicConfigurations,
+      },
+    }),
+  );
+
+  return {
+    bucketName,
+    queueName: queue.queueName,
+    queueUrl: queue.queueUrl,
+    queueArn: queue.queueArn,
+  };
+};
+
 module.exports = {
   createBucket,
   listBuckets,
@@ -124,4 +261,6 @@ module.exports = {
   copyBucket,
   getbucketVersioning,
   setbucketVersioning,
+  configureAllBucketsForSqs,
+  configureSqsNotification,
 };
