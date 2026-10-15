@@ -4,7 +4,7 @@
     "queueUrl" : "http://localhost:4566/000000000000/s3-object-events",
     "accountId" : "000000000000",
     "attributes" : {
-      "Policy" : "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowS3Bucketbucket123\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket123\"}}}]}",
+      "Policy" : "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowS3Bucketbucket2\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket-2\"}}},{\"Sid\":\"AllowS3Bucketbucket3\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket-3\"}}},{\"Sid\":\"AllowS3Bucketbucket123\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket123\"}}},{\"Sid\":\"AllowS3Bucketbucket1\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::bucket-1\"}}},{\"Sid\":\"AllowS3Bucketnewbucket1\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::new-bucket-1\"}}},{\"Sid\":\"AllowS3Bucketnewbucket\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"sqs:SendMessage\",\"Resource\":\"arn:aws:sqs:us-east-1:000000000000:s3-object-events\",\"Condition\":{\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:s3:::new-bucket\"}}}]}",
       "ReceiveMessageWaitTimeSeconds" : "0",
       "DelaySeconds" : "0",
       "MessageRetentionPeriod" : "345600",
@@ -13,6 +13,6 @@
     },
     "tags" : { },
     "createdTimestamp" : "2026-09-28T22:18:19.339961139Z",
-    "lastModifiedTimestamp" : "2026-09-28T22:18:19.361836963Z"
+    "lastModifiedTimestamp" : "2026-10-14T19:44:47.797276993Z"
   }
 }

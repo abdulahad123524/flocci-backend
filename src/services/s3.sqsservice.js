@@ -4,6 +4,9 @@ const {
   GetQueueAttributesCommand,
   SetQueueAttributesCommand,
   ReceiveMessageCommand,
+  SendMessage$,
+  SendMessageCommand,
+  DeleteMessageCommand,
 } = require("@aws-sdk/client-sqs");
 
 require("dotenv").config();
@@ -128,9 +131,53 @@ const receiveMessages = async (queueUrl) => {
   }));
 };
 
+const sqsSpendTime = async (queryUrl) => {
+  if (!queryUrl) {
+    throw new Error("Queue URL is required");
+  }
+
+  const messageBody = {
+    message: "Floci SQS direct message",
+    source: "manual-test",
+    created: new Date().toISOString(),
+  };
+
+  const response = await sqs.send(
+    new SendMessageCommand({
+      QueueUrl: queryUrl,
+      MessageBody: JSON.stringify(messageBody),
+    }),
+  );
+
+  return {
+    success: true,
+    message: "Test message sent successfully",
+    messageId: response.MessageId,
+    queueUrl: queryUrl, // Fixed
+  };
+};
+
+const deleteSqsMessage = async (queryUrl, receiptHandle) => {
+  if (!queryUrl || !receiptHandle) {
+    throw new Error("Queue URL  and Receipt handle are required");
+  }
+  await sqs.send(
+    new DeleteMessageCommand({
+      QueueUrl: queryUrl,
+      ReceiptHandle: receiptHandle,
+    }),
+  );
+  return {
+    success: true,
+    message: "SQS message delete successfully",
+  };
+};
+
 module.exports = {
   createObjectEventQueue,
   getObjectEventQueue,
   setQueuePolicy,
   receiveMessages,
+  sqsSpendTime,
+  deleteSqsMessage,
 };

@@ -69,6 +69,26 @@
     "uploadSequenceToken" : "a637c799-632d-46bc-b7b1-6f21b9181c30",
     "storedBytes" : 86603
   },
+  "000000000000/us-east-1::/floci/ui::2026/09/29/cc384a43" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/09/29/cc384a43",
+    "createdTime" : 1790698026261,
+    "firstEventTimestamp" : 1790698026477,
+    "lastEventTimestamp" : 1790699154085,
+    "lastIngestionTime" : 1790699154085,
+    "uploadSequenceToken" : "93654185-38c2-4bf9-9116-b8c094ac103c",
+    "storedBytes" : 26339
+  },
+  "000000000000/us-east-1::/floci/ui::2026/10/14/0ad8166a" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/10/14/0ad8166a",
+    "createdTime" : 1791996839919,
+    "firstEventTimestamp" : 1791996840308,
+    "lastEventTimestamp" : 1792021552279,
+    "lastIngestionTime" : 1792021552279,
+    "uploadSequenceToken" : "3123338c-529b-4f2b-8c93-bfac4bd24740",
+    "storedBytes" : 11698
+  },
   "000000000000/us-east-1::/floci/ui::2026/09/28/7cc1da94" : {
     "logGroupName" : "/floci/ui",
     "logStreamName" : "2026/09/28/7cc1da94",

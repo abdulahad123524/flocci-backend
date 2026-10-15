@@ -7,8 +7,8 @@
     "tags" : { },
     "notificationConfiguration" : {
       "queueConfigurations" : [ {
-        "id" : "queue-notification",
-        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:floci-job-queue",
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
         "events" : [ "s3:ObjectCreated:*" ],
         "filterRules" : [ ]
       } ],
@@ -44,7 +44,18 @@
     "versioningStatus" : null,
     "loggingConfiguration" : null,
     "tags" : { },
-    "notificationConfiguration" : null,
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : false
+    },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
@@ -112,11 +123,94 @@
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : {
-      "queueConfigurations" : [ ],
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
       "topicConfigurations" : [ ],
       "lambdaFunctionConfigurations" : [ ],
       "eventBridgeEnabled" : false,
-      "empty" : true
+      "empty" : false
+    },
+    "objectLockEnabled" : false,
+    "defaultRetention" : null,
+    "policy" : null,
+    "corsConfiguration" : null,
+    "lifecycleConfiguration" : null,
+    "transitionDefaultMinimumObjectSize" : null,
+    "acl" : null,
+    "encryptionConfiguration" : null,
+    "replicationConfiguration" : null,
+    "publicAccessBlockConfiguration" : null,
+    "ownershipControlsConfiguration" : null,
+    "requestPaymentPayer" : null,
+    "accelerateStatus" : null,
+    "region" : "us-east-1",
+    "websiteConfiguration" : null,
+    "metricsConfigurations" : null,
+    "intelligentTieringConfigurations" : null,
+    "analyticsConfigurations" : null,
+    "inventoryConfigurations" : null,
+    "versioningEnabled" : false
+  },
+  "000000000000/new-bucket-1" : {
+    "name" : "new-bucket-1",
+    "creationDate" : "2026-09-29T16:09:00.089957342Z",
+    "versioningStatus" : null,
+    "loggingConfiguration" : null,
+    "tags" : { },
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : false
+    },
+    "objectLockEnabled" : false,
+    "defaultRetention" : null,
+    "policy" : null,
+    "corsConfiguration" : null,
+    "lifecycleConfiguration" : null,
+    "transitionDefaultMinimumObjectSize" : null,
+    "acl" : null,
+    "encryptionConfiguration" : null,
+    "replicationConfiguration" : null,
+    "publicAccessBlockConfiguration" : null,
+    "ownershipControlsConfiguration" : null,
+    "requestPaymentPayer" : null,
+    "accelerateStatus" : null,
+    "region" : "us-east-1",
+    "websiteConfiguration" : null,
+    "metricsConfigurations" : null,
+    "intelligentTieringConfigurations" : null,
+    "analyticsConfigurations" : null,
+    "inventoryConfigurations" : null,
+    "versioningEnabled" : false
+  },
+  "000000000000/new-bucket" : {
+    "name" : "new-bucket",
+    "creationDate" : "2026-09-29T16:07:32.151672833Z",
+    "versioningStatus" : null,
+    "loggingConfiguration" : null,
+    "tags" : { },
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : false
     },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
