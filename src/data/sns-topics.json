@@ -1,0 +1,15 @@
+{
+  "000000000000/topic::us-east-1::arn:aws:sns:us-east-1:000000000000:floci-notifications" : {
+    "Name" : "floci-notifications",
+    "TopicArn" : "arn:aws:sns:us-east-1:000000000000:floci-notifications",
+    "Attributes" : {
+      "Policy" : "",
+      "TopicArn" : "arn:aws:sns:us-east-1:000000000000:floci-notifications",
+      "EffectiveDeliveryPolicy" : "",
+      "DisplayName" : "",
+      "DeliveryPolicy" : ""
+    },
+    "Tags" : { },
+    "CreatedAt" : "2026-10-15T23:11:07.975143751Z"
+  }
+}

@@ -2,6 +2,7 @@ const {
   getObjectEventQueue,
   receiveMessages,
   sqsSpendTime,
+  deleteSqsMessage,
 } = require("../services/s3.sqsservice");
 const bucketService = require("../services/s3-bucket");
 
@@ -77,8 +78,15 @@ const sqsDeleteMessage = async (req, res) => {
         message: "Receipt handle not required",
       });
     }
+    const queue = await getObjectEventQueue();
+    const result = await deleteSqsMessage(queue.queueUrl, reciepthandle);
+    return res.status(200).json(result);
   } catch (error) {
-    throw new Error(error, "");
+    // throw new Error(error, "");
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
