@@ -1,0 +1,20 @@
+{
+  "000000000000/sub::us-east-1::arn:aws:sns:us-east-1:000000000000:tahaa:b64bde2c-5995-43b1-84b9-7389f5c20896" : {
+    "accountId" : "000000000000",
+    "SubscriptionArn" : "arn:aws:sns:us-east-1:000000000000:tahaa:b64bde2c-5995-43b1-84b9-7389f5c20896",
+    "TopicArn" : "arn:aws:sns:us-east-1:000000000000:tahaa",
+    "Protocol" : "sqs",
+    "Endpoint" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+    "Owner" : "000000000000",
+    "Attributes" : { }
+  },
+  "000000000000/sub::us-east-1::arn:aws:sns:us-east-1:000000000000:floci-notificationssss:876ce79c-3912-4c6e-9c24-bb1828473871" : {
+    "accountId" : "000000000000",
+    "SubscriptionArn" : "arn:aws:sns:us-east-1:000000000000:floci-notificationssss:876ce79c-3912-4c6e-9c24-bb1828473871",
+    "TopicArn" : "arn:aws:sns:us-east-1:000000000000:floci-notificationssss",
+    "Protocol" : "sqs",
+    "Endpoint" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+    "Owner" : "000000000000",
+    "Attributes" : { }
+  }
+}

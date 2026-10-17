@@ -64,7 +64,12 @@ const subcribeSnsTopic = async ({ topicArn, protocol, endpoint }) => {
     }),
   );
 
-  return response.status(200).json(response);
+  return {
+    topicArn,
+    protocol,
+    endpoint,
+    subscriptionArn: response.SubscriptionArn || null,
+  };
 };
 
 module.exports = {

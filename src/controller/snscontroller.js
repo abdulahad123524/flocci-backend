@@ -31,7 +31,10 @@ const createsnsTopic = async (req, res) => {
 const handleSubcribeTopic = async (req, res) => {
   try {
     const { topicArn, protocol, endpoint } = req.body;
-    if ((!topicArn, protocol, endpoint)) {
+
+    console.log("=====>>>> backend===", topicArn, protocol, endpoint);
+
+    if (!topicArn || !protocol || !endpoint) {
       res.status(400).json({
         success: false,
         message: "topicArn , protocol,endpoint are required",
@@ -43,7 +46,10 @@ const handleSubcribeTopic = async (req, res) => {
       endpoint,
     });
 
-    return res.status(200).json(result);
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

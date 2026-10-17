@@ -26,7 +26,7 @@ const multipartfile = async function name(file, bucketname) {
   const key = isPath ? path.basename(file) : file.originalname;
   // If no buffer/body is provided in the initial multipart request,
   // we are only initializing the upload process.
-  const body = isPath ? fs.readFileSync(file) : (file.buffer || null);
+  const body = isPath ? fs.readFileSync(file) : file.buffer || null;
   const contentType = isPath
     ? "application/octet-stream"
     : file.mimetype || "application/octet-stream";
@@ -34,10 +34,10 @@ const multipartfile = async function name(file, bucketname) {
   if (!key) {
     throw new Error("File name is required");
   }
-  
+
   // Removed strict check on body existence here, as multipart
   // initialization does not require the full file body yet.
-  
+
   const command = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
@@ -89,9 +89,8 @@ const multipartfile = async function name(file, bucketname) {
 //   PartNumber:numParts,
 //   ContentLength: body.length,
 // })
-  
-// const response = await s3.send(uploadCommand)
 
+// const response = await s3.send(uploadCommand)
 
 // const  fullmutlipartUploadCommand = new CompleteMultipartUploadCommand({
 //   Bucket: bucket,
@@ -99,7 +98,7 @@ const multipartfile = async function name(file, bucketname) {
 //   UploadId: response.uploadId,
 //   MultipartUpload: {
 //     Parts: Array.from({ length: numParts }, (_, i) => ({
-//       ETag: response.ETag,  
+//       ETag: response.ETag,
 //     })),
 //   },
 // });
@@ -107,7 +106,6 @@ const multipartfile = async function name(file, bucketname) {
 // return { key, etag: response.ETag, uploadId: uploadId, partNumber: numParts };
 
 // }
-
 
 //   const command = new PutObjectCommand({
 //     Bucket: bucket,
@@ -121,7 +119,6 @@ const multipartfile = async function name(file, bucketname) {
 //   return { key, etag: response.ETag, imageUrl: url };
 // };
 
-
 const uploadfile = async (file, bucketName) => {
   const bucket = bucketName || process.env.AWS_BUCKET_NAME;
 
@@ -131,13 +128,9 @@ const uploadfile = async (file, bucketName) => {
 
   const isPath = typeof file === "string";
 
-  const key = isPath
-    ? path.basename(file)
-    : file.originalname;
+  const key = isPath ? path.basename(file) : file.originalname;
 
-  const body = isPath
-    ? fs.readFileSync(file)
-    : file.buffer;
+  const body = isPath ? fs.readFileSync(file) : file.buffer;
 
   const contentType = isPath
     ? "application/octet-stream"
@@ -158,7 +151,6 @@ const uploadfile = async (file, bucketName) => {
   // ==============================
 
   if (body.length >= One_Gb) {
-
     // Step 1: Create Multipart Upload
 
     const createCommand = new CreateMultipartUploadCommand({
@@ -175,22 +167,16 @@ const uploadfile = async (file, bucketName) => {
 
     const partSize = 10 * 1024 * 1024; // 10 MB
 
-    const numParts = Math.ceil(
-      body.length / partSize
-    );
+    const numParts = Math.ceil(body.length / partSize);
 
     const parts = [];
 
     // Step 3: Upload every part
 
     for (let i = 0; i < numParts; i++) {
-
       const start = i * partSize;
 
-      const end = Math.min(
-        start + partSize,
-        body.length
-      );
+      const end = Math.min(start + partSize, body.length);
 
       const part = body.subarray(start, end);
 
@@ -203,31 +189,26 @@ const uploadfile = async (file, bucketName) => {
         ContentLength: part.length,
       });
 
-      const response = await s3.send(
-        uploadCommand
-      );
+      const response = await s3.send(uploadCommand);
 
       parts.push({
         PartNumber: i + 1,
         ETag: response.ETag,
       });
     }
-console.log("All parts uploaded successfully:", parts);
+    console.log("All parts uploaded successfully:", parts);
     // Step 4: Complete Multipart Upload
 
-    const fullMultipartUploadCommand =
-      new CompleteMultipartUploadCommand({
-        Bucket: bucket,
-        Key: key,
-        UploadId: uploadId,
-        MultipartUpload: {
-          Parts: parts,
-        },
-      });
+    const fullMultipartUploadCommand = new CompleteMultipartUploadCommand({
+      Bucket: bucket,
+      Key: key,
+      UploadId: uploadId,
+      MultipartUpload: {
+        Parts: parts,
+      },
+    });
 
-    const completeResponse = await s3.send(
-      fullMultipartUploadCommand
-    );
+    const completeResponse = await s3.send(fullMultipartUploadCommand);
 
     return {
       key,
@@ -263,7 +244,6 @@ console.log("All parts uploaded successfully:", parts);
   };
 };
 
-
 const listfiles = async (bucketName) => {
   const command = new ListObjectsV2Command({
     Bucket: bucketName || process.env.AWS_BUCKET_NAME,
@@ -281,7 +261,6 @@ const getfile = async (key, bucketName) => {
   const command = new GetObjectCommand({
     Bucket: bucketName || process.env.AWS_BUCKET_NAME,
     Key: key,
-
   });
   const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
   const response = await s3.send(command);
@@ -300,7 +279,7 @@ const getfile = async (key, bucketName) => {
     dataUrl: isText
       ? null
       : `data:${contentType};base64,${Buffer.from(bytes).toString("base64")}`,
-      imageUrl: url,
+    imageUrl: url,
   };
 };
 
@@ -362,5 +341,5 @@ module.exports = {
   deleteBucketobject,
   copyObject,
   downlaodFile,
-  multipartfile
+  multipartfile,
 };

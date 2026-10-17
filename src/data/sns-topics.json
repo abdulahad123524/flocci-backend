@@ -11,5 +11,31 @@
     },
     "Tags" : { },
     "CreatedAt" : "2026-10-15T23:11:07.975143751Z"
+  },
+  "000000000000/topic::us-east-1::arn:aws:sns:us-east-1:000000000000:floci-notificationssss" : {
+    "Name" : "floci-notificationssss",
+    "TopicArn" : "arn:aws:sns:us-east-1:000000000000:floci-notificationssss",
+    "Attributes" : {
+      "Policy" : "",
+      "TopicArn" : "arn:aws:sns:us-east-1:000000000000:floci-notificationssss",
+      "EffectiveDeliveryPolicy" : "",
+      "DisplayName" : "",
+      "DeliveryPolicy" : ""
+    },
+    "Tags" : { },
+    "CreatedAt" : "2026-10-16T18:40:31.654739519Z"
+  },
+  "000000000000/topic::us-east-1::arn:aws:sns:us-east-1:000000000000:tahaa" : {
+    "Name" : "tahaa",
+    "TopicArn" : "arn:aws:sns:us-east-1:000000000000:tahaa",
+    "Attributes" : {
+      "Policy" : "",
+      "TopicArn" : "arn:aws:sns:us-east-1:000000000000:tahaa",
+      "EffectiveDeliveryPolicy" : "",
+      "DisplayName" : "",
+      "DeliveryPolicy" : ""
+    },
+    "Tags" : { },
+    "CreatedAt" : "2026-10-16T18:53:48.382008774Z"
   }
 }

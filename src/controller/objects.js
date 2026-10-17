@@ -1,5 +1,5 @@
 const objectService = require("../services/s3-objects");
-
+const File = require("../models/File");
 const listObjects = async (req, res) => {
   try {
     const bucket = req.query.bucket;
@@ -72,9 +72,17 @@ const uploadObject = async (req, res) => {
       },
       bucketName,
     );
-    res
+    const savedFile = await File.create({
+      filename,
+      bucketName,
+      key: response.key,
+      contentType: contentType || "application/octet-stream",
+      size: buffer.length,
+      etag: response.etag || null,
+    });
+    return res
       .status(200)
-      .json({ message: "File uploaded successfully", ...response });
+      .json({ message: "File uploaded successfully", data: savedFile });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
