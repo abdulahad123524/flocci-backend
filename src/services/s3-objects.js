@@ -10,6 +10,7 @@ const {
   PutMultipartUploadCommand,
   CompleteMultipartUploadCommand,
   UploadPartCommand,
+  HeadObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { s3 } = require("../config/config");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
@@ -245,18 +246,36 @@ const uploadfile = async (file, bucketName) => {
 };
 
 const listfiles = async (bucketName) => {
-  const command = new ListObjectsV2Command({
-    Bucket: bucketName || process.env.AWS_BUCKET_NAME,
-  });
-  const response = await s3.send(command);
-  return (response.Contents || []).map((item) => ({
-    key: item.Key,
-    size: item.Size,
-    lastModified: item.LastModified,
-    etag: item.ETag,
-  }));
-};
+  const bucket = bucketName || process.env.AWS_BUCKET_NAME;
 
+  const command = new ListObjectsV2Command({
+    Bucket: bucket,
+  });
+
+  const response = await s3.send(command);
+
+  const files = await Promise.all(
+    (response.Contents || []).map(async (item) => {
+      const head = new HeadObjectCommand({
+        Bucket: bucket,
+        Key: item.Key,
+      });
+
+      const metadata = await s3.send(head);
+
+      return {
+        key: item.Key,
+        size: item.Size,
+        lastModified: item.LastModified,
+        etag: item.ETag,
+        contentType: metadata.ContentType,
+        metadata: metadata.Metadata,
+      };
+    }),
+  );
+
+  return files;
+};
 const getfile = async (key, bucketName) => {
   const command = new GetObjectCommand({
     Bucket: bucketName || process.env.AWS_BUCKET_NAME,
@@ -334,6 +353,23 @@ const downlaodFile = async (key, bucketName) => {
   };
 };
 
+const getThumbnailUrl = async (key, bucketName) => {
+  console.log("===", key, bucketName);
+  if (!bucketName || !key) {
+    throw new Error(
+      `Missing S3 parameters: bucketName=${bucketName}, key=${key}`,
+    );
+  }
+
+  const command = new GetObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+
+  return getSignedUrl(s3, command, {
+    expiresIn: 3600,
+  });
+};
 module.exports = {
   uploadfile,
   listfiles,
@@ -342,4 +378,5 @@ module.exports = {
   copyObject,
   downlaodFile,
   multipartfile,
+  getThumbnailUrl,
 };

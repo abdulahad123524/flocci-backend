@@ -32,6 +32,14 @@ const fileSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    isImage: {
+      type: Boolean,
+      default: false,
+    },
+    thumbnailKey: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
