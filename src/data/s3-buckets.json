@@ -1,47 +1,8 @@
 {
-  "000000000000/bucket-2" : {
-    "name" : "bucket-2",
-    "creationDate" : "2026-09-25T21:00:15.800056810Z",
-    "versioningStatus" : null,
-    "loggingConfiguration" : null,
-    "tags" : { },
-    "notificationConfiguration" : {
-      "queueConfigurations" : [ {
-        "id" : "floci-s3-object-events",
-        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
-        "events" : [ "s3:ObjectCreated:*" ],
-        "filterRules" : [ ]
-      } ],
-      "topicConfigurations" : [ ],
-      "lambdaFunctionConfigurations" : [ ],
-      "eventBridgeEnabled" : false,
-      "empty" : false
-    },
-    "objectLockEnabled" : false,
-    "defaultRetention" : null,
-    "policy" : null,
-    "corsConfiguration" : null,
-    "lifecycleConfiguration" : null,
-    "transitionDefaultMinimumObjectSize" : null,
-    "acl" : null,
-    "encryptionConfiguration" : null,
-    "replicationConfiguration" : null,
-    "publicAccessBlockConfiguration" : null,
-    "ownershipControlsConfiguration" : null,
-    "requestPaymentPayer" : null,
-    "accelerateStatus" : null,
-    "region" : "us-east-1",
-    "websiteConfiguration" : null,
-    "metricsConfigurations" : null,
-    "intelligentTieringConfigurations" : null,
-    "analyticsConfigurations" : null,
-    "inventoryConfigurations" : null,
-    "versioningEnabled" : false
-  },
   "000000000000/bucket-3" : {
     "name" : "bucket-3",
     "creationDate" : "2026-09-28T17:30:40.596611067Z",
-    "versioningStatus" : null,
+    "versioningStatus" : "Enabled",
     "loggingConfiguration" : null,
     "tags" : { },
     "notificationConfiguration" : {
@@ -75,7 +36,7 @@
     "intelligentTieringConfigurations" : null,
     "analyticsConfigurations" : null,
     "inventoryConfigurations" : null,
-    "versioningEnabled" : false
+    "versioningEnabled" : true
   },
   "000000000000/bucket123" : {
     "name" : "bucket123",
