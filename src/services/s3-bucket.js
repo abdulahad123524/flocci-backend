@@ -8,6 +8,7 @@ const {
   PutBucketVersioningCommand,
   GetBucketNotificationConfigurationCommand,
   PutBucketNotificationConfigurationCommand,
+  ListObjectVersionsCommand,
 } = require("@aws-sdk/client-s3");
 const { s3 } = require("../config/config");
 const objectService = require("./s3-objects");
@@ -195,6 +196,24 @@ const configureAllBucketsForSqs = async () => {
   return results;
 };
 
+const getObjectVersions = async (bucketName, key) => {
+  const command = new ListObjectVersionsCommand({
+    Bucket: bucketName,
+    Prefix: key,
+  });
+
+  const response = await s3.send(command);
+
+  return (response.Versions || [])
+    .filter((version) => version.Key === key)
+    .map((version) => ({
+      key: version.Key,
+      versionId: version.VersionId,
+      isLatest: version.IsLatest,
+      lastModified: version.LastModified,
+    }));
+};
+
 const configureSqsNotification = async (bucketName) => {
   if (!bucketName) {
     throw new Error("Bucket name is required");
@@ -263,4 +282,5 @@ module.exports = {
   setbucketVersioning,
   configureAllBucketsForSqs,
   configureSqsNotification,
+  getObjectVersions,
 };

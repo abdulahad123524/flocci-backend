@@ -28,7 +28,36 @@ const setBucketVersioning = async (req, res) => {
   }
 };
 
+const getObjectVersions = async (req, res) => {
+  try {
+    const { bucketName, key } = req.query;
+
+    if (!bucketName || !key) {
+      return res.status(400).json({
+        message: "bucketName and key are required",
+      });
+    }
+
+    const versions = await bucketService.getObjectVersions(bucketName, key);
+
+    return res.status(200).json({
+      message: "Object versions fetched successfully",
+      bucketName,
+      key,
+      count: versions.length,
+      versions,
+    });
+  } catch (error) {
+    console.error("Get object versions error:", error);
+
+    return res.status(500).json({
+      message: error.message || "Failed to fetch object versions",
+    });
+  }
+};
+
 module.exports = {
   getBucketVersioning,
   setBucketVersioning,
+  getObjectVersions,
 };

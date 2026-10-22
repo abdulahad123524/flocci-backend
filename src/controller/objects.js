@@ -224,16 +224,28 @@ const uploadObject = async (req, res) => {
       thumbnailKey = thumbnailResponse.key;
     }
 
-    const savedFile = await File.create({
-      filename,
-      bucketName,
-      key: response.key,
-      contentType: mimeType,
-      size: buffer.length,
-      etag: response.etag || null,
-      isImage,
-      thumbnailKey,
-    });
+    const savedFile = await File.findOneAndUpdate(
+      {
+        bucketName,
+        key: response.key,
+      },
+      {
+        $set: {
+          filename,
+          contentType: mimeType,
+          size: buffer.length,
+          etag: response.etag || null,
+          isImage,
+          thumbnailKey,
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+        runValidators: true,
+        setDefaultsOnInsert: true,
+      },
+    );
 
     return res.status(201).json({
       message: "File uploaded successfully",
