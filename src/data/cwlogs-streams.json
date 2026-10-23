@@ -19,16 +19,6 @@
     "uploadSequenceToken" : "30439940-04a1-440c-940e-0eebe6cdce05",
     "storedBytes" : 41286
   },
-  "000000000000/us-east-1::/floci/ui::2026/10/15/69487d36" : {
-    "logGroupName" : "/floci/ui",
-    "logStreamName" : "2026/10/15/69487d36",
-    "createdTime" : 1792078064881,
-    "firstEventTimestamp" : 1792078065003,
-    "lastEventTimestamp" : 1792078143320,
-    "lastIngestionTime" : 1792078143320,
-    "uploadSequenceToken" : "e3bb07a8-9d72-4bf0-bc39-e1b5531b42c0",
-    "storedBytes" : 17137
-  },
   "000000000000/us-east-1::/aws/lambda/floci-s3-object-created::2026/09/24/[$LATEST]16df6e79" : {
     "logGroupName" : "/aws/lambda/floci-s3-object-created",
     "logStreamName" : "2026/09/24/[$LATEST]16df6e79",
@@ -38,6 +28,16 @@
     "lastIngestionTime" : 1790289317850,
     "uploadSequenceToken" : "cd855d40-2979-45f3-bd72-7aa361986b1d",
     "storedBytes" : 219
+  },
+  "000000000000/us-east-1::/floci/ui::2026/10/15/69487d36" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/10/15/69487d36",
+    "createdTime" : 1792078064881,
+    "firstEventTimestamp" : 1792078065003,
+    "lastEventTimestamp" : 1792078143320,
+    "lastIngestionTime" : 1792078143320,
+    "uploadSequenceToken" : "e3bb07a8-9d72-4bf0-bc39-e1b5531b42c0",
+    "storedBytes" : 17137
   },
   "000000000000/us-east-1::/floci/ui::2026/09/11/2c2c72fb" : {
     "logGroupName" : "/floci/ui",
@@ -78,6 +78,16 @@
     "lastIngestionTime" : 1790294861965,
     "uploadSequenceToken" : "00afa5ff-ea32-42db-ab25-95c9f776d427",
     "storedBytes" : 153384
+  },
+  "000000000000/us-east-1::/floci/ui::2026/10/22/3d6bda68" : {
+    "logGroupName" : "/floci/ui",
+    "logStreamName" : "2026/10/22/3d6bda68",
+    "createdTime" : 1792692580314,
+    "firstEventTimestamp" : 1792692580638,
+    "lastEventTimestamp" : 1792713505664,
+    "lastIngestionTime" : 1792713505664,
+    "uploadSequenceToken" : "2ec61f17-83d8-4072-8e75-b200f5a00b25",
+    "storedBytes" : 28625
   },
   "000000000000/us-east-1::/floci/ui::2026/10/19/29bb6a77" : {
     "logGroupName" : "/floci/ui",

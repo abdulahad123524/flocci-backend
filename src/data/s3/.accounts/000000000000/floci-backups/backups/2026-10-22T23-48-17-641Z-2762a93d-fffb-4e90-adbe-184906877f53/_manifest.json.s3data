@@ -1,0 +1,11 @@
+{
+  "backupId": "2026-10-22T23-48-17-641Z-2762a93d-fffb-4e90-adbe-184906877f53",
+  "sourceBucketName": "bucket-1",
+  "backupBucketName": "floci-backups",
+  "createdAt": "2026-10-22T23:48:17.648Z",
+  "totalObjects": 0,
+  "successfulObjects": 0,
+  "failedObjects": 0,
+  "objects": [],
+  "status": "completed"
+}

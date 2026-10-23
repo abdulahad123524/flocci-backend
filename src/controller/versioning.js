@@ -32,6 +32,8 @@ const getObjectVersions = async (req, res) => {
   try {
     const { bucketName, key } = req.query;
 
+    console.log("bucket ===", bucketName, key);
+
     if (!bucketName || !key) {
       return res.status(400).json({
         message: "bucketName and key are required",

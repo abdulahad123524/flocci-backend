@@ -102,6 +102,180 @@ const createMultipartUpload = async (req, res) => {
 //   }
 // };
 
+// const uploadObject = async (req, res) => {
+//   let uploadedKey = null;
+//   let uploadedThumbnailKey = null;
+//   let bucketName = null;
+
+//   try {
+//     const { filename, content, contentType } = req.body || {};
+//     bucketName = req.body?.bucketName;
+
+//     if (!filename || !content) {
+//       return res.status(400).json({ message: "No file provided" });
+//     }
+
+//     if (!bucketName) {
+//       return res.status(400).json({ message: "Select a bucket first" });
+//     }
+
+//     if (typeof content !== "string") {
+//       return res.status(400).json({
+//         message: "File content must be a Base64 string",
+//       });
+//     }
+
+//     // Support both plain Base64 and data:image/...;base64,... format.
+//     const base64Content = content.replace(/^data:[^;]+;base64,/i, "");
+
+//     const buffer = Buffer.from(base64Content, "base64");
+
+//     if (!buffer.length) {
+//       return res.status(400).json({ message: "File is empty" });
+//     }
+
+//     const mimeType = contentType || "application/octet-stream";
+
+//     const originalSize = buffer.length;
+//     let uploadBuffer = buffer;
+//     let uploadContentType = mimeType;
+//     let thumbnailKey = null;
+//     let isImage = false;
+//     let compression = null;
+
+//     // Upload original file.
+//     const response = await objectService.uploadfile(
+//       {
+//         originalname: filename,
+//         buffer,
+//         mimetype: mimeType,
+//       },
+//       bucketName,
+//     );
+
+//     uploadedKey = response.key;
+
+//     if (mimeType.startsWith("image/")) {
+//       let metadata;
+
+//       try {
+//         metadata = await sharp(buffer, {
+//           limitInputPixels: 40000000,
+//         }).metadata();
+//       } catch (error) {
+//         console.error("Image decode error:", error.message);
+
+//         await objectService.deleteBucketobject(bucketName, uploadedKey);
+//         uploadedKey = null;
+
+//         return res.status(400).json({
+//           message: "Invalid image data. Please upload a valid image.",
+//         });
+//       }
+
+//       const supportedFormats = ["jpeg", "png", "webp"];
+
+//       if (!supportedFormats.includes(metadata.format)) {
+//         await objectService.deleteBucketobject(bucketName, uploadedKey);
+//         uploadedKey = null;
+
+//         return res.status(400).json({
+//           message: "Only JPEG, PNG, and WebP images are supported",
+//         });
+//       }
+
+//       isImage = true;
+
+//       const thumbnailBuffer = await sharp(buffer, {
+//         limitInputPixels: 40000000,
+//       })
+//         .rotate()
+//         .resize({
+//           width: 300,
+//           height: 300,
+//           fit: "inside",
+//           withoutEnlargement: true,
+//         })
+//         .jpeg({ quality: 75 })
+//         .toBuffer();
+
+//       const safeName = filename
+//         .split(/[\\/]/)
+//         .pop()
+//         .replace(/[^a-zA-Z0-9._-]/g, "_")
+//         .replace(/\.[^.]+$/, "");
+
+//       thumbnailKey = `thumbnails/${Date.now()}-${safeName || "image"}.jpg`;
+
+//       const thumbnailResponse = await objectService.uploadfile(
+//         {
+//           originalname: thumbnailKey,
+//           buffer: thumbnailBuffer,
+//           mimetype: "image/jpeg",
+//         },
+//         bucketName,
+//       );
+
+//       uploadedThumbnailKey = thumbnailResponse.key;
+//       thumbnailKey = thumbnailResponse.key;
+//     }
+
+//     const savedFile = await File.findOneAndUpdate(
+//       {
+//         bucketName,
+//         key: response.key,
+//       },
+//       {
+//         $set: {
+//           filename,
+//           contentType: mimeType,
+//           size: buffer.length,
+//           etag: response.etag || null,
+//           isImage,
+//           thumbnailKey,
+//         },
+//       },
+//       {
+//         new: true,
+//         upsert: true,
+//         runValidators: true,
+//         setDefaultsOnInsert: true,
+//       },
+//     );
+
+//     return res.status(201).json({
+//       message: "File uploaded successfully",
+//       data: savedFile,
+//     });
+//   } catch (error) {
+//     console.error("Upload error:", error);
+
+//     // Best-effort cleanup if a later step fails.
+//     if (bucketName && uploadedThumbnailKey) {
+//       try {
+//         await objectService.deleteBucketobject(
+//           bucketName,
+//           uploadedThumbnailKey,
+//         );
+//       } catch (cleanupError) {
+//         console.error("Thumbnail cleanup failed:", cleanupError.message);
+//       }
+//     }
+
+//     if (bucketName && uploadedKey) {
+//       try {
+//         await objectService.deleteBucketobject(bucketName, uploadedKey);
+//       } catch (cleanupError) {
+//         console.error("Original cleanup failed:", cleanupError.message);
+//       }
+//     }
+
+//     return res.status(500).json({
+//       message: error.message || "File upload failed",
+//     });
+//   }
+// };
+
 const uploadObject = async (req, res) => {
   let uploadedKey = null;
   let uploadedThumbnailKey = null;
@@ -112,11 +286,15 @@ const uploadObject = async (req, res) => {
     bucketName = req.body?.bucketName;
 
     if (!filename || !content) {
-      return res.status(400).json({ message: "No file provided" });
+      return res.status(400).json({
+        message: "No file provided",
+      });
     }
 
     if (!bucketName) {
-      return res.status(400).json({ message: "Select a bucket first" });
+      return res.status(400).json({
+        message: "Select a bucket first",
+      });
     }
 
     if (typeof content !== "string") {
@@ -125,40 +303,27 @@ const uploadObject = async (req, res) => {
       });
     }
 
-    // Support both plain Base64 and data:image/...;base64,... format.
+    // Support plain Base64 and data URL formats.
     const base64Content = content.replace(/^data:[^;]+;base64,/i, "");
 
     const buffer = Buffer.from(base64Content, "base64");
 
     if (!buffer.length) {
-      return res.status(400).json({ message: "File is empty" });
+      return res.status(400).json({
+        message: "File is empty",
+      });
     }
 
     const mimeType = contentType || "application/octet-stream";
 
-    console.log("Upload debug:", {
-      filename,
-      contentType: mimeType,
-      contentLength: content.length,
-      bufferLength: buffer.length,
-      hasDataUrlPrefix: content.startsWith("data:"),
-    });
-
-    // Upload original file.
-    const response = await objectService.uploadfile(
-      {
-        originalname: filename,
-        buffer,
-        mimetype: mimeType,
-      },
-      bucketName,
-    );
-
-    uploadedKey = response.key;
-
+    const originalSize = buffer.length;
+    let uploadBuffer = buffer;
+    let uploadContentType = mimeType;
     let thumbnailKey = null;
     let isImage = false;
+    let compression = null;
 
+    // Validate and compress supported image formats.
     if (mimeType.startsWith("image/")) {
       let metadata;
 
@@ -167,11 +332,6 @@ const uploadObject = async (req, res) => {
           limitInputPixels: 40000000,
         }).metadata();
       } catch (error) {
-        console.error("Image decode error:", error.message);
-
-        await objectService.deleteBucketobject(bucketName, uploadedKey);
-        uploadedKey = null;
-
         return res.status(400).json({
           message: "Invalid image data. Please upload a valid image.",
         });
@@ -180,17 +340,89 @@ const uploadObject = async (req, res) => {
       const supportedFormats = ["jpeg", "png", "webp"];
 
       if (!supportedFormats.includes(metadata.format)) {
-        await objectService.deleteBucketobject(bucketName, uploadedKey);
-        uploadedKey = null;
-
         return res.status(400).json({
           message: "Only JPEG, PNG, and WebP images are supported",
         });
       }
 
-      isImage = true;
+      // Make sure the declared MIME type matches the actual format.
+      const expectedMimeTypes = {
+        jpeg: ["image/jpeg", "image/jpg"],
+        png: ["image/png"],
+        webp: ["image/webp"],
+      };
 
-      const thumbnailBuffer = await sharp(buffer, {
+      if (
+        !expectedMimeTypes[metadata.format].includes(mimeType.toLowerCase())
+      ) {
+        return res.status(400).json({
+          message: "Image content does not match its content type",
+        });
+      }
+
+      try {
+        let imagePipeline = sharp(buffer, {
+          limitInputPixels: 40000000,
+        }).rotate();
+
+        if (metadata.format === "jpeg") {
+          imagePipeline = imagePipeline.jpeg({
+            quality: 80,
+            mozjpeg: true,
+          });
+          uploadContentType = "image/jpeg";
+        } else if (metadata.format === "webp") {
+          imagePipeline = imagePipeline.webp({
+            quality: 80,
+          });
+          uploadContentType = "image/webp";
+        } else {
+          imagePipeline = imagePipeline.png({
+            compressionLevel: 9,
+            adaptiveFiltering: true,
+          });
+          uploadContentType = "image/png";
+        }
+
+        uploadBuffer = await imagePipeline.toBuffer();
+
+        compression = {
+          originalSize,
+          compressedSize: uploadBuffer.length,
+          savedBytes: originalSize - uploadBuffer.length,
+          reductionPercent: Number(
+            (
+              ((originalSize - uploadBuffer.length) / originalSize) *
+              100
+            ).toFixed(2),
+          ),
+        };
+
+        isImage = true;
+      } catch (error) {
+        console.error("Image compression error:", error.message);
+
+        return res.status(400).json({
+          message: "Image could not be processed",
+        });
+      }
+    }
+
+    // Upload the compressed original image (or unchanged non-image file).
+    const response = await objectService.uploadfile(
+      {
+        originalname: filename,
+        buffer: uploadBuffer,
+        mimetype: uploadContentType,
+      },
+      bucketName,
+    );
+
+    uploadedKey = response.key;
+
+    // Generate thumbnail from the processed original image.
+    if (isImage) {
+      const thumbnailBuffer = await sharp(uploadBuffer, {
         limitInputPixels: 40000000,
       })
         .rotate()
@@ -209,11 +441,11 @@ const uploadObject = async (req, res) => {
         .replace(/[^a-zA-Z0-9._-]/g, "_")
         .replace(/\.[^.]+$/, "");
 
-      thumbnailKey = `thumbnails/${Date.now()}-${safeName || "image"}.jpg`;
+      const thumbnailName = `thumbnails/${Date.now()}-${safeName || "image"}.jpg`;
 
       const thumbnailResponse = await objectService.uploadfile(
         {
-          originalname: thumbnailKey,
+          originalname: thumbnailName,
           buffer: thumbnailBuffer,
           mimetype: "image/jpeg",
         },
@@ -224,6 +456,7 @@ const uploadObject = async (req, res) => {
       thumbnailKey = thumbnailResponse.key;
     }
 
+    // Save the actual uploaded object's size.
     const savedFile = await File.findOneAndUpdate(
       {
         bucketName,
@@ -232,8 +465,8 @@ const uploadObject = async (req, res) => {
       {
         $set: {
           filename,
-          contentType: mimeType,
-          size: buffer.length,
+          contentType: uploadContentType,
+          size: uploadBuffer.length,
           etag: response.etag || null,
           isImage,
           thumbnailKey,
@@ -250,6 +483,7 @@ const uploadObject = async (req, res) => {
     return res.status(201).json({
       message: "File uploaded successfully",
       data: savedFile,
+      ...(compression && { compression }),
     });
   } catch (error) {
     console.error("Upload error:", error);
