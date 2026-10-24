@@ -4,10 +4,14 @@ const {
   GetQueueAttributesCommand,
   SetQueueAttributesCommand,
   ReceiveMessageCommand,
-  SendMessage$,
   SendMessageCommand,
   DeleteMessageCommand,
 } = require("@aws-sdk/client-sqs");
+const { lambda } = require("../lambda/index");
+const {
+  ListEventSourceMappingsCommand,
+  CreateEventSourceMappingCommand,
+} = require("@aws-sdk/client-lambda");
 
 require("dotenv").config();
 
@@ -22,6 +26,9 @@ const sqs = new SQSClient({
 
 const S3_OBJECT_EVENT_QUEUE_NAME =
   process.env.S3_OBJECT_EVENT_QUEUE_NAME || "s3-object-events";
+
+const DEFAULT_LAMBDA_FUNCTION =
+  process.env.SQS_LAMBDA_FUNCTION_NAME || "floci-s3-object-created";
 
 const createObjectEventQueue = async () => {
   const createResponse = await sqs.send(
@@ -116,7 +123,7 @@ const receiveMessages = async (queueUrl) => {
       QueueUrl: queueUrl,
       MaxNumberOfMessages: 10,
       WaitTimeSeconds: 1,
-      VisibilityTimeout: 0,
+      VisibilityTimeout: 20,
       AttributeNames: ["All"],
       MessageAttributeNames: ["All"],
     }),
@@ -173,6 +180,61 @@ const deleteSqsMessage = async (queryUrl, receiptHandle) => {
   };
 };
 
+const configureSqsLambdaMapping = async ({
+  queueArn,
+  functionName = DEFAULT_LAMBDA_FUNCTION,
+}) => {
+  if (!queueArn || !functionName) {
+    throw new Error("Queue ARN and Lambda function name are required");
+  }
+
+  // Step 1: Check existing mappings
+  const response = await lambda.send(
+    new ListEventSourceMappingsCommand({
+      EventSourceArn: queueArn,
+      FunctionName: functionName,
+    }),
+  );
+
+  const mappings = response.EventSourceMappings || [];
+
+  const existingEventMapping = mappings.find((mapping) => {
+    return (
+      mapping.EventSourceArn === queueArn &&
+      (mapping.FunctionArn === functionName ||
+        mapping.FunctionArn?.endsWith(`:function:${functionName}`))
+    );
+  });
+
+  // Step 2: Reuse the existing mapping
+  if (existingEventMapping) {
+    return {
+      success: true,
+      created: false,
+      uuid: existingEventMapping.UUID,
+      state: existingEventMapping.State,
+      message: "SQS-to-Lambda mapping already exists",
+    };
+  }
+
+  // Step 3: Create mapping only when it does not exist
+  const mapping = await lambda.send(
+    new CreateEventSourceMappingCommand({
+      EventSourceArn: queueArn,
+      FunctionName: functionName,
+      Enabled: true,
+      BatchSize: 1,
+    }),
+  );
+
+  return {
+    success: true,
+    created: true,
+    message: "SQS-to-Lambda mapping created",
+    mapping,
+  };
+};
+
 module.exports = {
   createObjectEventQueue,
   getObjectEventQueue,
@@ -180,4 +242,5 @@ module.exports = {
   receiveMessages,
   sqsSpendTime,
   deleteSqsMessage,
+  configureSqsLambdaMapping,
 };

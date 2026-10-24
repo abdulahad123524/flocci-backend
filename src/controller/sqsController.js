@@ -3,55 +3,92 @@ const {
   receiveMessages,
   sqsSpendTime,
   deleteSqsMessage,
+  configureSqsLambdaMapping,
 } = require("../services/s3.sqsservice");
+
 const bucketService = require("../services/s3-bucket");
 
-const sqsCreate = async (req, res) => {
+const sqsCreate = async (_req, res) => {
   try {
-    const result = await getObjectEventQueue();
+    const queue = await getObjectEventQueue();
 
-    return res.status(200).json(result);
+    return res.status(200).json({
+      success: true,
+      message: "SQS queue created or retrieved successfully",
+      data: queue,
+    });
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// Read SQS messages
 const sqsRead = async (_req, res) => {
   try {
     const queue = await getObjectEventQueue();
-
     const messages = await receiveMessages(queue.queueUrl);
 
     return res.status(200).json({
+      success: true,
+      queueName: queue.queueName,
       messages,
     });
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
 };
 
+// Configure S3 bucket notifications and SQS-to-Lambda mapping
 const sqsConfigure = async (req, res) => {
   try {
     const { bucketName } = req.body || {};
+
     if (!bucketName) {
-      return res.status(400).json({ message: "bucketName is required" });
+      return res.status(400).json({
+        success: false,
+        message: "bucketName is required",
+      });
     }
 
-    const result = await bucketService.configureSqsNotification(bucketName);
+    // Configure S3 -> SQS notification
+    const notificationResult =
+      await bucketService.configureSqsNotification(bucketName);
+
+    // Get queue ARN and configure SQS -> Lambda
+    const queue = await getObjectEventQueue();
+
+    const lambdaMappingResult = await configureSqsLambdaMapping({
+      queueArn: queue.queueArn,
+      functionName:
+        process.env.SQS_LAMBDA_FUNCTION_NAME || "floci-s3-object-created",
+    });
+
     return res.status(200).json({
-      message: "S3 object notifications configured",
-      result,
+      success: true,
+      message: "S3 -> SQS -> Lambda configuration completed",
+      data: {
+        bucketName,
+        queue,
+        notificationResult,
+        lambdaMappingResult,
+      },
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
-const sqsSpendTest = async (req, res) => {
+// Send a direct test message to SQS
+const sqsSpendTest = async (_req, res) => {
   try {
     const queue = await getObjectEventQueue();
     const result = await sqsSpendTime(queue.queueUrl);
@@ -61,28 +98,35 @@ const sqsSpendTest = async (req, res) => {
       message: "Direct SQS test message sent successfully",
       data: result,
     });
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
-      message: e.message,
+      message: error.message,
     });
   }
 };
 
+// Delete an SQS message using its receipt handle
 const sqsDeleteMessage = async (req, res) => {
   try {
-    const { reciepthandle } = req.body;
-    if (!reciepthandle) {
-      return res.json(400).json({
+    const { receiptHandle } = req.body || {};
+
+    if (!receiptHandle) {
+      return res.status(400).json({
         success: false,
-        message: "Receipt handle not required",
+        message: "receiptHandle is required",
       });
     }
+
     const queue = await getObjectEventQueue();
-    const result = await deleteSqsMessage(queue.queueUrl, reciepthandle);
-    return res.status(200).json(result);
+
+    const result = await deleteSqsMessage(queue.queueUrl, receiptHandle);
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
   } catch (error) {
-    // throw new Error(error, "");
     return res.status(500).json({
       success: false,
       message: error.message,

@@ -1,0 +1,30 @@
+{
+  "000000000000/e397acd0-5858-44f9-a7dd-dc28cd138d7f" : {
+    "uuid" : "e397acd0-5858-44f9-a7dd-dc28cd138d7f",
+    "functionArn" : "arn:aws:lambda:us-east-1:000000000000:function:floci-s3-object-created",
+    "functionName" : "floci-s3-object-created",
+    "accountId" : "000000000000",
+    "eventSourceArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+    "queueUrl" : "http://localhost:4566/000000000000/s3-object-events",
+    "region" : "us-east-1",
+    "enabled" : true,
+    "batchSize" : 1,
+    "maximumBatchingWindowInSeconds" : null,
+    "state" : "Enabled",
+    "lastModified" : 1792787450644,
+    "startingPosition" : null,
+    "startingPositionTimestamp" : null,
+    "functionResponseTypes" : [ ],
+    "shardSequenceNumbers" : { },
+    "scalingConfig" : null,
+    "bisectBatchOnFunctionError" : null,
+    "maximumRetryAttempts" : null,
+    "destinationConfig" : null,
+    "filterCriteria" : null,
+    "selfManagedEventSource" : null,
+    "topics" : [ ],
+    "sourceAccessConfigurations" : [ ],
+    "maximumConcurrency" : null,
+    "reportBatchItemFailures" : false
+  }
+}

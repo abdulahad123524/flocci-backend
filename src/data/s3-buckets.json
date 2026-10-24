@@ -2,10 +2,21 @@
   "000000000000/floci-backups" : {
     "name" : "floci-backups",
     "creationDate" : "2026-10-22T22:30:34.914934812Z",
-    "versioningStatus" : null,
+    "versioningStatus" : "Enabled",
     "loggingConfiguration" : null,
     "tags" : { },
-    "notificationConfiguration" : null,
+    "notificationConfiguration" : {
+      "queueConfigurations" : [ {
+        "id" : "floci-s3-object-events",
+        "queueArn" : "arn:aws:sqs:us-east-1:000000000000:s3-object-events",
+        "events" : [ "s3:ObjectCreated:*" ],
+        "filterRules" : [ ]
+      } ],
+      "topicConfigurations" : [ ],
+      "lambdaFunctionConfigurations" : [ ],
+      "eventBridgeEnabled" : false,
+      "empty" : false
+    },
     "objectLockEnabled" : false,
     "defaultRetention" : null,
     "policy" : null,
@@ -25,7 +36,7 @@
     "intelligentTieringConfigurations" : null,
     "analyticsConfigurations" : null,
     "inventoryConfigurations" : null,
-    "versioningEnabled" : false
+    "versioningEnabled" : true
   },
   "000000000000/bucket123" : {
     "name" : "bucket123",
